@@ -1,4 +1,4 @@
-const WebSocket = require('ws');
+// const WebSocket = require('ws');
 
 const misc = require('./miscRequests');
 const protocol = require('./protocol');
@@ -226,9 +226,7 @@ module.exports = class Client {
     if (clientOptions.DEBUG) global.TW_DEBUG = clientOptions.DEBUG;
 
     const server = clientOptions.server || 'data';
-    this.#ws = new WebSocket(`wss://${server}.tradingview.com/socket.io/websocket?&type=chart`, {
-      origin: 'https://s.tradingview.com',
-    });
+    this.#ws = new WebSocket(`wss://${server}.tradingview.com/socket.io/websocket?&type=chart`);
 
     if (clientOptions.token) {
       misc.getUser(
@@ -253,17 +251,17 @@ module.exports = class Client {
       this.sendQueue();
     }
 
-    this.#ws.on('open', () => {
+    this.#ws.addEventListener('open', () => {
       this.#handleEvent('connected');
       this.sendQueue();
     });
 
-    this.#ws.on('close', () => {
+    this.#ws.addEventListener('close', () => {
       this.#logged = false;
       this.#handleEvent('disconnected');
     });
 
-    this.#ws.on('message', (data) => this.#parsePacket(data));
+    this.#ws.addEventListener('message', (data) => this.#parsePacket(data.data));
   }
 
   /** @type {ClientBridge} */
