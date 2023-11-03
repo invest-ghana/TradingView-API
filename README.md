@@ -18,7 +18,7 @@ Here's how you can use the `useTradeView` hook in your React component:
 
 ```jsx
 import React from 'react';
-import { useTradeView } from 'path-to-hooks';
+import { useTradeView } from 'path-cloned-repo/src/hooks/useTradeView';
 
 const MyTradingComponent = () => {
   const {
