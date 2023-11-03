@@ -1,4 +1,4 @@
-# Based on TradingView API [![GitHub stars](https://img.shields.io/github/stars/Mathieu2301/TradingView-API.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/Mathieu2301/TradingView-API/stargazers/)
+# Based on [TradingView API](https://GitHub.com/Mathieu2301/TradingView-API/)
 
 # useTradeView Hook
 
