@@ -1,72 +1,76 @@
-# TradingView API [![GitHub stars](https://img.shields.io/github/stars/Mathieu2301/TradingView-API.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/Mathieu2301/TradingView-API/stargazers/)
+# Based on TradingView API [![GitHub stars](https://img.shields.io/github/stars/Mathieu2301/TradingView-API.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/Mathieu2301/TradingView-API/stargazers/)
 
-[![Tests](https://github.com/Mathieu2301/TradingView-API/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/Mathieu2301/TradingView-API/actions/workflows/tests.yml)
-[![CodeFactor](https://www.codefactor.io/repository/github/mathieu2301/tradingview-api/badge/main)](https://www.codefactor.io/repository/github/mathieu2301/tradingview-api/overview/main)
-[![GitHub latest commit](https://img.shields.io/github/last-commit/Mathieu2301/TradingView-API)](https://GitHub.com/Mathieu2301/TradingView-API/commit/)
-[![Npm package yearly downloads](https://badgen.net/npm/dt/@mathieuc/tradingview)](https://npmjs.com/@mathieuc/tradingview)
-[![Minimum node.js version](https://badgen.net/npm/node/@mathieuc/tradingview)](https://npmjs.com/@mathieuc/tradingview)
-[![Npm package version](https://badgen.net/npm/v/@mathieuc/tradingview)](https://npmjs.com/package/@mathieuc/tradingview)
+# useTradeView Hook
 
-Get realtime market prices and indicator values from Tradingview !
-
-## 🔵 New Telegram group
-
-👉 To get help, exchange tips, find collaborators, developers, missions, etc...
-
-Here is the Telegram group of the library: https://t.me/tradingview_api
-
-## Features
-
-- [x] Premium features
-- [x] Automatically backtest many strategies and try many settings in a very little time
-- [x] Get drawings you made on your chart
-- [x] Works with invite-only indicators
-- [x] Unlimited simultaneous indicators
-- [x] Realtime
-- [x] Get TradingView's technical analysis
-- [x] Replay mode + Fake Replay mode (for free plan)
-- [x] Get values from a specific date range
-- [ ] TradingView socket server emulation
-- [ ] Interract with public chats
-- [ ] Get Screener top values
-- [ ] Get Hotlists
-- [ ] Get Calendar
-- IF YOU WANT A FEATURE, ASK ME !
-
-## Possibilities
-
-- Trading bot
-- Discord alerts
-- Hard backtest
-- Machine Learning based indicator
-- Free replay mode for all timeframes
-
-___
+The `useTradeView` hook is designed to integrate with the TradingView API, providing a way to fetch and utilize trading data within your React application. It encapsulates the logic for managing chart and quote updates, trade decisions, and execution readiness based on TradingView data.
 
 ## Installation
 
-Stable version:
+This hook is part of the `invest-ghana/TradingView-API` library. To use it in your project, clone the repository and import the hook as shown below.
 
-```ruby
-npm i @mathieuc/tradingview
+```bash
+git clone https://github.com/invest-ghana/TradingView-API.git
 ```
 
-Last version:
+## Usage
 
-```ruby
-npm i github:Mathieu2301/TradingView-API
+Here's how you can use the `useTradeView` hook in your React component:
+
+```jsx
+import React from 'react';
+import { useTradeView } from 'path-to-hooks';
+
+const MyTradingComponent = () => {
+  const {
+    chartClient,
+    chartField,
+    quoteField,
+    tradeDecision,
+  } = useTradeView({
+    // Optional props with callbacks
+  });
+
+  // Your component logic here
+
+  return (
+    // Your component JSX here
+  );
+};
+
+export default MyTradingComponent;
 ```
 
-## Examples
+## API
 
-You can find all the examples and snippets in `./examples` folder.
+The `useTradeView` hook accepts an optional `props` object with the following properties:
 
-## Before opening an issue
+- `onChartUpdate`: Callback function that is called when the chart updates.
+- `onQuoteUpdate`: Callback function that is called when the quote updates.
+- `checkTradeConditions`: Function that checks the trade conditions based on the provided data.
 
-Please look at examples and previously resolved issues before opening a new one. I can't help everyone (especially for questions that are not library related but JavaScript related). Thank you for your understanding.
-___
+It returns an object containing the following properties:
 
-## Problems
+- `chartClient`: An instance of the chart client.
+- `chartField`: The current chart field data.
+- `quoteField`: The current quote field data.
+- `tradeDecision`: The current trade decision.
 
- If you have errors in console or unwanted behavior,
- please create an issue [here](https://github.com/Mathieu2301/Tradingview-API/issues).
+## Hook Logic
+
+The hook sets up a chart client and manages state for chart data, quote data, and trade decisions. It also includes logic to determine whether a trade should be executed based on the current trade decision and quote data.
+
+## Contributing
+
+If you have suggestions for how `useTradeView` could be improved, or want to report a bug, please file an issue on our GitHub repository.
+
+For more information on contributing to this project, please read our contribution guidelines.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/invest-ghana/TradingView-API/blob/main/LICENSE) file for details.
+```
+
+
+---
+
+You are currently on the free plan which is significantly limited by the number of requests. To increase your quota you can check available plans following the link [here](https://c7d59216ee8ec59bda5e51ffc17a994d.auth.portal-pluginlab.ai/pricing).
