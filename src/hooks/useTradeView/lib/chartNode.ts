@@ -1,5 +1,5 @@
 import { GetChartClientReturn, TradingViewClientProps } from "../types";
-import Client from '../../../client';
+import Client from '../../../client_node';
 
 const replayData = [
   1690793400, //July 31, 2023 | 8:50 UTC
