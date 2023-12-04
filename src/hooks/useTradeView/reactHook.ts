@@ -65,7 +65,7 @@ export const useTradeView = (props?: TradingViewClientProps) => {
   }, [chartField, checkTradeConditions]);
 
   const shouldExecute = useMemo<boolean>(() => {
-    if (tradeDecision?.action === "HOLD") {
+    if (tradeDecision?.action === "hold") {
       return false;
     }
     const matchedPeriod = chartField?.periods[0];
@@ -82,7 +82,7 @@ export const useTradeView = (props?: TradingViewClientProps) => {
     tradeDecision?.isBullish,
   ]);
   useEffect(() => {
-    if (tradeDecision?.action === "HOLD") {
+    if (tradeDecision?.action === "hold") {
       return;
     }
     console.log("Ready to trade");

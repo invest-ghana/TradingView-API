@@ -8,7 +8,7 @@ import { TimeFrame } from "../../../types";
   If you're on a lower timeframe (like 1H or 15M), 30 periods might be sufficient. */
 export const NUM_ON_PREV_PERIODS = 80;
 
-export type TradeAction = "BUY" | "SELL" | "HOLD";
+export type TradeAction = "buy" | "sell" | "hold";
 
 export interface Subsession {
   id: string;
