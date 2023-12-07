@@ -20,11 +20,23 @@ export interface Subsession {
 }
 
 export interface TradeDecision {
+  instrument?: string;
   action: TradeAction;
-  stopLoss: number;
-  takeProfit: number;
+  stopLoss: number; // To Be Deprecated
+  takeProfit: number; // To Be Deprecated
   tradeConditionsResults?: TradeConditionsResult[];
   isBullish?: boolean;
+  execute?: {
+    stopLoss: number;
+    takeProfit: number;
+    currentPrice: number;
+    units: number
+    riskPerTrade: number
+    stopLossPips: number
+    riskFactor: number
+    takeProfitPips: number
+    pipValue: number
+  }
 }
 export interface TradeConditionsResult {
   description: string;
