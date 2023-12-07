@@ -32,7 +32,7 @@ export const getChartClient = ({
   
   const client = new Client(); // Creates a websocket client
   const quoteSession = new client.Session.Quote();
-  const quoteSessionMarket = new quoteSession.Market("PEPPERSTONE:XAUUSD");
+  const quoteSessionMarket = new quoteSession.Market(`${source}:${currency}`);
   quoteSessionMarket.onData(async (data: any) => {
     if (!!data?.lp) {
       onQuoteUpdate?.({
