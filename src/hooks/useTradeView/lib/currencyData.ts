@@ -7,7 +7,6 @@ export const XAUUSD = {
   },
   pipValue: 0.1, // Adjusted Pip value for a mini lot in XAU/USD
   instrument: "XAU_USD",
-  accountId: process.env.OANDA_ACCOUNT_ID,
   decimalPlaces: 2 //ex: 1985.75
 };
 
@@ -20,6 +19,5 @@ export const EURUSD = {
   },
   pipValue: 1, // Adjusted Pip value for a mini lot in XAU/USD
   instrument: "EUR_USD",
-  accountId: process.env.OANDA_ACCOUNT_ID,
   decimalPlaces: 5 //ex: 1.07927
 };
