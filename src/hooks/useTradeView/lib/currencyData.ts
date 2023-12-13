@@ -1,7 +1,7 @@
 export const XAUUSD = {
-  riskPerTrade: 0.01, // 1% risk per trade
-  stopLossPips: 50, // Adjusted for XAU/USD (e.g., 50 pips)
-  riskFactor: 4, // 1:4 risk factor
+  riskPerTrade: 0.05, // 5% risk per trade
+  stopLossPips: 30, // Adjusted for XAU/USD (e.g., 50 pips)
+  riskFactor: 3, // 1:4 risk factor
   get takeProfitPips() {
     return this.riskFactor * this.stopLossPips;
   },
