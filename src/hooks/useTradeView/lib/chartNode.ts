@@ -99,7 +99,7 @@ export const getChartClient = ({
 
   chart.setMarket(`${source}:${currency}`, {
     timeframe,
-    // replay: 1702465200 + 5 * 60,
+    replay: 1703557500 + 5 * 60,
     range: 80,
   });
   chart.onError(onError);

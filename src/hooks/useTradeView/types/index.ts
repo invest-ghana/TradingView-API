@@ -1,4 +1,5 @@
 import { PricePeriod, MarketInfos } from "../../../chart/session";
+import { Periods } from "../../../miscRequests";
 import { TimeFrame } from "../../../types";
 
 /* Considering the conditions with the maximum requirement, you'd need at least 30 previous 
@@ -22,21 +23,22 @@ export interface Subsession {
 export interface TradeDecision {
   instrument?: string;
   action: TradeAction;
-  stopLoss: number; // To Be Deprecated
-  takeProfit: number; // To Be Deprecated
   tradeConditionsResults?: TradeConditionsResult[];
   isBullish?: boolean;
-  execute?: {
-    stopLoss: number;
-    takeProfit: number;
-    currentPrice: number;
-    units: number
-    riskPerTrade: number
-    stopLossPips: number
-    riskFactor: number
-    takeProfitPips: number
-    pipValue: number
-  }
+  pricePeriodTested?: PricePeriod;
+  prevPricePeriods?: PricePeriod[];
+  balance?: number;
+  stopLoss?: number;
+  takeProfit?: number;
+  currentPrice?: number;
+  leverage?: number;
+  units?: number;
+  riskPerTrade?: number;
+  stopLossPips?: number;
+  riskFactor?: number;
+  takeProfitPips?: number;
+  pipValue?: number;
+  pipAmount?: number;
 }
 export interface TradeConditionsResult {
   description: string;
@@ -85,4 +87,25 @@ export interface TradingViewClientProps {
     pricePeriod: PricePeriod,
     prevPricePeriods: PricePeriod[]
   ) => TradeDecision;
+}
+
+export const enum FOREXTYPE {
+  CURRENCY, // EUR_USD
+  COMMODITY, // XAU_USD
+}
+export interface InstrumentData {
+  type: FOREXTYPE;
+  riskPerTrade: number; // 1% risk per trade
+  stopLossPips: number; // Adjusted for XAU/USD (e.g., 10 pips)
+  riskFactor: number; // 1:4 risk factor
+  takeProfitPips: number; // this.riskFactor * this.stopLossPips
+  pipValue: number; // Adjusted Pip value for a mini lot in XAU/USD
+  pipAmount: number; // Adjusted Pip value for a mini lot in XAU/USD
+  lotSizeValue: {
+    standard: number;
+    mini: number;
+    micro: number;
+  };
+  instrument: string;
+  decimalPlaces: number; //ex: 1.07927
 }
