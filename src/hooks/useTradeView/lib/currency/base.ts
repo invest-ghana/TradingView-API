@@ -45,15 +45,12 @@ export class BaseInstrumentData implements InstrumentData {
     isBullish: boolean
   ): { stopLoss: number; takeProfit: number } {
     let stopLoss, takeProfit;
-console.log(currentPrice)
-console.log(this.stopLossPips * this.pipAmount)
-console.log(this.stopLossPips * this.pipValue)
     if (isBullish) {
-      stopLoss = currentPrice - this.stopLossPips * this.pipAmount;
-      takeProfit = currentPrice + this.takeProfitPips * this.pipAmount;
+      stopLoss = currentPrice - this.stopLossPips * this.pipValue;
+      takeProfit = currentPrice + this.takeProfitPips * this.pipValue;
     } else {
-      stopLoss = currentPrice + this.stopLossPips * this.pipAmount;
-      takeProfit = currentPrice - this.takeProfitPips * this.pipAmount;
+      stopLoss = currentPrice + this.stopLossPips * this.pipValue;
+      takeProfit = currentPrice - this.takeProfitPips * this.pipValue;
     }
 
     return { stopLoss, takeProfit };
