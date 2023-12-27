@@ -52,7 +52,8 @@ export class BaseInstrumentData implements InstrumentData {
       stopLoss = currentPrice + this.stopLossPips * this.pipValue;
       takeProfit = currentPrice - this.takeProfitPips * this.pipValue;
     }
-
+    stopLoss = Number(stopLoss.toFixed(this.decimalPlaces));
+    takeProfit = Number(takeProfit.toFixed(this.decimalPlaces));
     return { stopLoss, takeProfit };
   }
 
