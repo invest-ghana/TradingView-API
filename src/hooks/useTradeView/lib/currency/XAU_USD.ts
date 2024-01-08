@@ -6,7 +6,6 @@ class XAU_USD extends CommodityData {
     super();
     this.instrument = instrument;
     this.stopLossPips = 150;
-    this.riskPerTrade = 0.1; // 10% risk per trade
   }
 }
 

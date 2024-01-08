@@ -33,10 +33,7 @@ export class BaseInstrumentData implements InstrumentData {
   getUnits(balance: number): number {
     const riskAmount = balance * this.riskPerTrade;
     const moneyRiskedPerPip = riskAmount / this.stopLossPips;
-
-    const multiplier =
-      this.type === FOREXTYPE.CURRENCY ? this.lotSizeValue.mini : 1;
-    const units = (moneyRiskedPerPip / this.pipAmount) * multiplier;
+    const units = (moneyRiskedPerPip / this.pipAmount) * this.lotSizeValue.mini;
     return Math.round(units);
   }
 
@@ -146,7 +143,7 @@ export class CurrencyData extends BaseInstrumentData {
   constructor() {
     super(FOREXTYPE.CURRENCY);
     this.pipValue = 0.0001;
-    this.decimalPlaces = 4;
+    this.decimalPlaces = 5;
     this.lotSizeValue = {
       standard: 100000,
       mini: 10000,

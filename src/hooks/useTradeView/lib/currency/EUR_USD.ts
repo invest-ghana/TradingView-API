@@ -1,4 +1,4 @@
-import { BaseInstrumentData, CurrencyData } from "./base";
+import { CurrencyData } from "./base";
 
 const instrument = "EUR_USD";
 class EUR_USD extends CurrencyData {

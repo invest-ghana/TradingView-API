@@ -56,7 +56,7 @@ const replayData = [
   1701938700, //Thu Dec 07 2023 08:45
 ];
 export const getChartClient = ({
-  source = "PEPPERSTONE",
+  source = "OANDA",
   currency = "XAUUSD",
   timeframe = "5",
   onError = (...err) => {
@@ -99,7 +99,8 @@ export const getChartClient = ({
 
   chart.setMarket(`${source}:${currency}`, {
     timeframe,
-    // replay: 1703669100 + 5 * 60,
+    // replay: 1703669100 + 5 * 60,//gold
+    // replay: 1703694000 + 5 * 60,//eur
     range: 80,
   });
   chart.onError(onError);
