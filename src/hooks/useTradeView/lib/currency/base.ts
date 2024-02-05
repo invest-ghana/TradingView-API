@@ -1,6 +1,6 @@
-import { FOREXTYPE, InstrumentData, TradeDecision } from "../../types";
+import { FOREXTYPE, InstrumentDataType, TradeDecision } from "../../types";
 
-export class BaseInstrumentData implements InstrumentData {
+export class BaseInstrumentData implements InstrumentDataType {
   type: FOREXTYPE;
   riskPerTrade: number;
   riskFactor: number;
@@ -30,11 +30,16 @@ export class BaseInstrumentData implements InstrumentData {
     return this.pipValue * this.lotSizeValue.mini;
   }
 
-  getUnits(balance: number): number {
+  getUnits(balance: number, currentPrice: number): number {
     const riskAmount = balance * this.riskPerTrade;
     const moneyRiskedPerPip = riskAmount / this.stopLossPips;
-    const units = (moneyRiskedPerPip / this.pipAmount) * this.lotSizeValue.mini;
-    return Math.round(units);
+    const unitsRisked =
+      (moneyRiskedPerPip / this.pipAmount) * this.lotSizeValue.mini;
+
+    const leveragedPricePerUnit = currentPrice / 30; // With 30:1 leverage
+    const maxUnitsWithBalance = balance / leveragedPricePerUnit; // Maximum units within balance
+    const feasibleUnits = Math.min(maxUnitsWithBalance, unitsRisked); // Adjust to the lower
+    return Math.round(feasibleUnits);
   }
 
   getSLTP(
@@ -54,8 +59,8 @@ export class BaseInstrumentData implements InstrumentData {
     return { stopLoss, takeProfit };
   }
 
-  updateTradeDecisionData(tradeDecision: TradeDecision) {
-    const units = this.getUnits(tradeDecision?.balance);
+  updateTradeDecisionData(tradeDecision: TradeDecision, currentPrice) {
+    const units = this.getUnits(tradeDecision?.balance, currentPrice);
 
     const { stopLoss, takeProfit } = this.getSLTP(
       tradeDecision?.currentPrice,

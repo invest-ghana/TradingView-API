@@ -5,7 +5,7 @@ class XAU_USD extends CommodityData {
   constructor() {
     super();
     this.instrument = instrument;
-    this.stopLossPips = 150;
+    this.stopLossPips = 15;
   }
 }
 

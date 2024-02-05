@@ -59,6 +59,8 @@ export const getChartClient = ({
   source = "OANDA",
   currency = "XAUUSD",
   timeframe = "5",
+  replayTimestamp = undefined,
+  range = 100,
   onError = (...err) => {
     // Listen for errors (can avoid crash)
     console.error("Chart error:", ...err);
@@ -99,9 +101,8 @@ export const getChartClient = ({
 
   chart.setMarket(`${source}:${currency}`, {
     timeframe,
-    // replay: 1703669100 + 5 * 60,//gold
-    // replay: 1703694000 + 5 * 60,//eur
-    range: 80,
+    replay: replayTimestamp, //1704444900 + 5 * 60, //gold
+    range,
   });
   chart.onError(onError);
 

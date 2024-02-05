@@ -79,6 +79,8 @@ export interface TradingViewClientProps {
   source?: string;
   currency?: string;
   timeframe?: TimeFrame;
+  replayTimestamp?: number; //Replay mode starting point (Timestamp) ex: 1703669100 + 5 * 60
+  range?: number; // How many candlesticks to fetch. use - to get candlesticks after the timestamp
   onError?: (err: Error) => void;
   onSymbolLoaded?: () => void;
   onChartUpdate?: (chart: ChartField) => void;
@@ -93,7 +95,7 @@ export const enum FOREXTYPE {
   CURRENCY, // EUR_USD
   COMMODITY, // XAU_USD
 }
-export interface InstrumentData {
+export interface InstrumentDataType {
   type: FOREXTYPE;
   riskPerTrade: number; // 1% risk per trade
   stopLossPips: number; // Adjusted for XAU/USD (e.g., 10 pips)
