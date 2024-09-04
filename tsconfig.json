@@ -1,19 +1,35 @@
 {
-  // Change this to match your project
-  "include": ["./main.js","src"],
   "compilerOptions": {
-    // Tells TypeScript to read JS files, as
-    // normally they are ignored as source files
-    "allowJs": true,
-    // Generate d.ts files
-    "declaration": true,
-    // Types should go into this directory.
-    // Removing this would place the .d.ts files
-    // next to the .js files
-    "outDir": "dist",
-    // go to js file when using IDE functions like
-    // "Go to Definition" in VSCode
-    "declarationMap": true,
-    "esModuleInterop": true
-  }
+    "target": "ES5", // Target ES5 to ensure compatibility with older environments
+    "module": "CommonJS", // CommonJS module system for Node.js compatibility
+    "lib": ["DOM", "ESNext"], // Include DOM and latest JavaScript features
+    "allowJs": true, // Allow JavaScript files to be compiled
+    "skipLibCheck": true, // Skip type checking of declaration files to reduce errors from third-party libraries
+    "esModuleInterop": true, // Enable interoperability between CommonJS and ES modules
+    "allowSyntheticDefaultImports": true, // Allow default imports from modules with no default export
+    "strict": false, // Disable strict mode to reduce the number of errors
+    "noImplicitAny": false, // Allow variables to implicitly have an 'any' type
+    "noEmit": true, // Prevent emitting files
+    "strictNullChecks": false,
+    "forceConsistentCasingInFileNames": true, // Enforce consistent casing in file names
+    "isolatedModules": true, // Required for Babel; ensures each file is treated as a separate module
+    "resolveJsonModule": true, // Enable importing JSON files
+    "jsx": "react", // JSX support for React components
+    "moduleResolution": "node", // Module resolution strategy that mimics Node.js
+    "baseUrl": "./", // Base directory for resolving non-relative module names
+    "paths": {
+      "*": ["node_modules/*"]
+    }
+  },
+  "include": [
+    "src/**/*", // Include all TypeScript and JavaScript files in the src directory
+    "react/**/*" // Include React hook files or any React-specific code
+  ],
+  "exclude": [
+    "node_modules", // Exclude dependencies
+    "**/*.spec.ts", // Exclude test files
+    "**/*.test.ts",
+    "node_modules", // Exclude node modules
+    "build" // Exclude the build directory if present
+  ]
 }

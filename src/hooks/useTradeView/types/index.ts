@@ -1,5 +1,4 @@
 import { PricePeriod, MarketInfos } from "../../../chart/session";
-import { Periods } from "../../../miscRequests";
 import { TimeFrame } from "../../../types";
 
 /* Considering the conditions with the maximum requirement, you'd need at least 30 previous 
@@ -25,6 +24,7 @@ export interface TradeDecision {
   action: TradeAction;
   tradeConditionsResults?: TradeConditionsResult[];
   isBullish?: boolean;
+  isBullishTrade?: boolean;
   pricePeriodTested?: PricePeriod;
   prevPricePeriods?: PricePeriod[];
   balance?: number;
@@ -39,6 +39,7 @@ export interface TradeDecision {
   takeProfitPips?: number;
   pipValue?: number;
   pipAmount?: number;
+  marginRate?: number;
 }
 export interface TradeConditionsResult {
   description: string;
@@ -110,4 +111,5 @@ export interface InstrumentDataType {
   };
   instrument: string;
   decimalPlaces: number; //ex: 1.07927
+  marginRate?: number; //ex: 0.05. this value is read from oanda api for the specific instrument
 }

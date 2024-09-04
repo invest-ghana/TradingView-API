@@ -14,12 +14,16 @@ export class BaseInstrumentData implements InstrumentDataType {
     micro: number;
   };
 
-  constructor(type: FOREXTYPE) {
+  constructor(type: FOREXTYPE, instrument?: string) {
     this.type = type;
     this.riskPerTrade = 0.01; // 1% risk per trade
-    this.riskFactor = 3; // 1:4 risk factor
+    this.pipValue = 0.01;
+    this.instrument = instrument ?? "";
+    this.decimalPlaces = 2;
+    this.riskFactor = 4; // 1:4 risk factor
     this.stopLossPips = 15; // Default stoplossPips
     this.lotSizeValue = { standard: 0, mini: 0, micro: 0 }; // Initialized with default values
+
   }
 
   get takeProfitPips(): number {
@@ -30,42 +34,43 @@ export class BaseInstrumentData implements InstrumentDataType {
     return this.pipValue * this.lotSizeValue.mini;
   }
 
-  getUnits(balance: number, currentPrice: number): number {
-    const riskAmount = balance * this.riskPerTrade;
-    const moneyRiskedPerPip = riskAmount / this.stopLossPips;
-    const unitsRisked =
-      (moneyRiskedPerPip / this.pipAmount) * this.lotSizeValue.mini;
 
-    const leveragedPricePerUnit = currentPrice / 30; // With 30:1 leverage
-    const maxUnitsWithBalance = balance / leveragedPricePerUnit; // Maximum units within balance
-    const feasibleUnits = Math.min(maxUnitsWithBalance, unitsRisked); // Adjust to the lower
-    return Math.round(feasibleUnits);
+  getUnits(tradeDecision: TradeDecision): number {
+    // const riskAmount = balance * this.riskPerTrade;
+    // const moneyRiskedPerPip = riskAmount / this.stopLossPips;
+    // const unitsRisked =
+    //   (moneyRiskedPerPip / this.pipAmount) * this.lotSizeValue.mini;
+
+    // const leveragedPricePerUnit = currentPrice / 30; // With 30:1 leverage
+    // const maxUnitsWithBalance = balance / leveragedPricePerUnit; // Maximum units within balance
+    // const feasibleUnits = Math.min(maxUnitsWithBalance, unitsRisked); // Adjust to the lower
+    const units = tradeDecision.balance / (tradeDecision.marginRate * tradeDecision.currentPrice)
+    return Math.floor(units);
   }
 
-  getSLTP(
-    currentPrice: number,
-    isBullish: boolean
+  getSLTP(tradeDecision: TradeDecision
   ): { stopLoss: number; takeProfit: number } {
     let stopLoss, takeProfit;
-    if (isBullish) {
-      stopLoss = currentPrice - this.stopLossPips * this.pipValue;
-      takeProfit = currentPrice + this.takeProfitPips * this.pipValue;
+    if (tradeDecision.isBullishTrade) {
+      stopLoss = tradeDecision.pricePeriodTested.min - this.stopLossPips * this.pipAmount;
+      takeProfit = tradeDecision.currentPrice +
+        (this.takeProfitPips * this.pipAmount) +
+        (tradeDecision.currentPrice - tradeDecision.pricePeriodTested.min);
     } else {
-      stopLoss = currentPrice + this.stopLossPips * this.pipValue;
-      takeProfit = currentPrice - this.takeProfitPips * this.pipValue;
+      stopLoss = tradeDecision.pricePeriodTested.max + this.stopLossPips * this.pipAmount;
+      takeProfit = tradeDecision.currentPrice -
+        ((this.takeProfitPips * this.pipAmount) +
+          (tradeDecision.pricePeriodTested.max - tradeDecision.currentPrice));
     }
     stopLoss = Number(stopLoss.toFixed(this.decimalPlaces));
     takeProfit = Number(takeProfit.toFixed(this.decimalPlaces));
     return { stopLoss, takeProfit };
   }
 
-  updateTradeDecisionData(tradeDecision: TradeDecision, currentPrice) {
-    const units = this.getUnits(tradeDecision?.balance, currentPrice);
+  updateTradeDecisionData(tradeDecision: TradeDecision) {
+    const units = this.getUnits(tradeDecision);
 
-    const { stopLoss, takeProfit } = this.getSLTP(
-      tradeDecision?.currentPrice,
-      tradeDecision.isBullish
-    );
+    const { stopLoss, takeProfit } = this.getSLTP(tradeDecision);
 
     tradeDecision = {
       ...tradeDecision,
@@ -86,24 +91,19 @@ export class BaseInstrumentData implements InstrumentDataType {
     text: string;
     html: string;
   } {
-    const { stopLoss, takeProfit } = this.getSLTP(
-      tradeDecision?.currentPrice,
-      tradeDecision?.isBullish
+    const { stopLoss, takeProfit } = this.getSLTP(tradeDecision
     );
     const periodTested = tradeDecision.pricePeriodTested;
-    const text = `Ready to trade: ${
-      tradeDecision?.action
-    }Stoploss: ${stopLoss} | TakeProfit: ${takeProfit}
+    const text = `Ready to trade: ${tradeDecision?.action
+      }Stoploss: ${stopLoss} | TakeProfit: ${takeProfit}
               CandleStick -> Date: ${new Date(
-                periodTested.time * 1000
-              )} High: ${periodTested.max} | Open:  ${
-      periodTested.open
-    } | Close: ${periodTested.close} | Low: ${periodTested.min} `; // plain text body
+        periodTested.time * 1000
+      )} High: ${periodTested.max} | Open:  ${periodTested.open
+      } | Close: ${periodTested.close} | Low: ${periodTested.min} `; // plain text body
     const html = `Ready to trade:
         <br>CandleStick -> Date: ${new Date(periodTested.time * 1000)}
-        <br>High: ${periodTested.max} | Open:  ${periodTested.open} | Close: ${
-      periodTested.close
-    } | Low: ${periodTested.min}   
+        <br>High: ${periodTested.max} | Open:  ${periodTested.open} | Close: ${periodTested.close
+      } | Low: ${periodTested.min}   
         <br>trade action: ${tradeDecision?.action}  
         <br>stoploss: ${stopLoss}  
         <br>takeProfit: ${takeProfit}  
@@ -114,10 +114,7 @@ export class BaseInstrumentData implements InstrumentDataType {
     return { text, html };
   }
   prepareCandlestickDataForParse(tradeDecision: TradeDecision) {
-    const { stopLoss, takeProfit } = this.getSLTP(
-      tradeDecision?.currentPrice,
-      tradeDecision?.isBullish
-    );
+    const { stopLoss, takeProfit } = this.getSLTP(tradeDecision);
     const periodTested = tradeDecision.pricePeriodTested;
     const candlestickData = {
       time: periodTested.time,

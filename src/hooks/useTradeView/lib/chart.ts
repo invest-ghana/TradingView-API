@@ -60,7 +60,7 @@ export const getChartClient = ({
   currency = "XAUUSD",
   timeframe = "5",
   replayTimestamp = undefined,
-  range = 100,
+  range = 80,
   onError = (...err) => {
     // Listen for errors (can avoid crash)
     console.error("Chart error:", ...err);
