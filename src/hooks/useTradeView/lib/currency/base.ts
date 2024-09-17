@@ -52,15 +52,15 @@ export class BaseInstrumentData implements InstrumentDataType {
   ): { stopLoss: number; takeProfit: number } {
     let stopLoss, takeProfit;
     if (tradeDecision.isBullishTrade) {
-      stopLoss = tradeDecision.pricePeriodTested.min - this.stopLossPips * this.pipAmount;
+      stopLoss = tradeDecision.pinbarCandlestick.min - this.stopLossPips * this.pipAmount;
       takeProfit = tradeDecision.currentPrice +
         (this.takeProfitPips * this.pipAmount) +
-        (tradeDecision.currentPrice - tradeDecision.pricePeriodTested.min);
+        (tradeDecision.currentPrice - tradeDecision.pinbarCandlestick.min);
     } else {
-      stopLoss = tradeDecision.pricePeriodTested.max + this.stopLossPips * this.pipAmount;
+      stopLoss = tradeDecision.pinbarCandlestick.max + this.stopLossPips * this.pipAmount;
       takeProfit = tradeDecision.currentPrice -
         ((this.takeProfitPips * this.pipAmount) +
-          (tradeDecision.pricePeriodTested.max - tradeDecision.currentPrice));
+          (tradeDecision.pinbarCandlestick.max - tradeDecision.currentPrice));
     }
     stopLoss = Number(stopLoss.toFixed(this.decimalPlaces));
     takeProfit = Number(takeProfit.toFixed(this.decimalPlaces));
@@ -93,7 +93,7 @@ export class BaseInstrumentData implements InstrumentDataType {
   } {
     const { stopLoss, takeProfit } = this.getSLTP(tradeDecision
     );
-    const periodTested = tradeDecision.pricePeriodTested;
+    const periodTested = tradeDecision.pinbarCandlestick;
     const text = `Ready to trade: ${tradeDecision?.action
       }Stoploss: ${stopLoss} | TakeProfit: ${takeProfit}
               CandleStick -> Date: ${new Date(
@@ -115,7 +115,7 @@ export class BaseInstrumentData implements InstrumentDataType {
   }
   prepareCandlestickDataForParse(tradeDecision: TradeDecision) {
     const { stopLoss, takeProfit } = this.getSLTP(tradeDecision);
-    const periodTested = tradeDecision.pricePeriodTested;
+    const periodTested = tradeDecision.pinbarCandlestick;
     const candlestickData = {
       time: periodTested.time,
       timeString: new Date(periodTested.time * 1000).toISOString(),

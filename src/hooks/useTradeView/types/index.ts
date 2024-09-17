@@ -10,6 +10,14 @@ export const NUM_ON_PREV_PERIODS = 80;
 
 export type TradeAction = "buy" | "sell" | "hold";
 
+export enum TRADESTRATEGY {
+  PINBAR = "PINBAR",
+  THREELINESTRIKE = "THREELINESTRIKE",
+  TREND = "TREND",
+  SWING = "SWING",
+  FAIRVALUEGAP = "FAIRVALUEGAP",
+}
+
 export interface Subsession {
   id: string;
   description: string;
@@ -25,8 +33,8 @@ export interface TradeDecision {
   tradeConditionsResults?: TradeConditionsResult[];
   isBullish?: boolean;
   isBullishTrade?: boolean;
-  pricePeriodTested?: PricePeriod;
-  prevPricePeriods?: PricePeriod[];
+  pinbarCandlestick?: PricePeriod;
+  previousCandlesticks?: PricePeriod[];
   balance?: number;
   stopLoss?: number;
   takeProfit?: number;
@@ -40,6 +48,8 @@ export interface TradeDecision {
   pipValue?: number;
   pipAmount?: number;
   marginRate?: number;
+  strategy?: TRADESTRATEGY;
+  orderId?: string;
 }
 export interface TradeConditionsResult {
   description: string;
@@ -86,10 +96,7 @@ export interface TradingViewClientProps {
   onSymbolLoaded?: () => void;
   onChartUpdate?: (chart: ChartField) => void;
   onQuoteUpdate?: (quote: QuoteField) => void;
-  checkTradeConditions?: (
-    pricePeriod: PricePeriod,
-    prevPricePeriods: PricePeriod[]
-  ) => TradeDecision;
+  checkTradeConditions?: (candlesticks: PricePeriod[]) => TradeDecision;
 }
 
 export const enum FOREXTYPE {

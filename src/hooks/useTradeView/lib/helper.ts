@@ -1,7 +1,7 @@
 import { PricePeriod } from "../../../chart/session";
 
-export const analyzeTrend = (pricePeriods: PricePeriod[]) => {
-  if (!Array.isArray(pricePeriods) || pricePeriods.length === 0) {
+export const analyzeTrend = (candlesticks: PricePeriod[]) => {
+  if (!Array.isArray(candlesticks) || candlesticks.length === 0) {
     return "Invalid pricePeriods data";
   }
 
@@ -9,7 +9,7 @@ export const analyzeTrend = (pricePeriods: PricePeriod[]) => {
   let bearishCount = 0;
 
   // Assuming each pricePeriod is an object { open, high, low, close }
-  pricePeriods.forEach((pricePeriod) => {
+  candlesticks.forEach((pricePeriod) => {
     if (pricePeriod.close > pricePeriod.open) {
       bullishCount++;
     } else if (pricePeriod.close < pricePeriod.open) {
@@ -27,3 +27,11 @@ export const analyzeTrend = (pricePeriods: PricePeriod[]) => {
     return "Neutral";
   }
 };
+
+export const isCandleStickBullish = (candlestick: PricePeriod) => {
+  return candlestick.close > candlestick.open;
+}
+
+export const isCandleStickBullishTrend = (candlesticks: PricePeriod[]) => {
+  return analyzeTrend(candlesticks) === "Bullish"
+}
