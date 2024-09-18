@@ -49,7 +49,14 @@ export interface TradeDecision {
   pipAmount?: number;
   marginRate?: number;
   strategy?: TRADESTRATEGY;
+  accountId?: string;
   orderId?: string;
+  tradeId?: string
+  tradeState?: 'CLOSED' | 'OPEN';
+  tradeOpenTime?: number;
+  tradeCloseTime?: number;
+  tradeRealizedPL?: number;
+  tradeUnRealizedPL?: number;
 }
 export interface TradeConditionsResult {
   description: string;
